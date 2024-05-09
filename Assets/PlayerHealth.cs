@@ -1,0 +1,33 @@
+using UnityEngine;
+using UnityEngine.UI;
+
+public class PlayerHealth : MonoBehaviour
+{
+    public int maxHealth = 100;
+    public int currentHealth;
+    public HealthBar healthBar;  // Reference to the HealthBar script
+
+    void Start()
+    {
+        currentHealth = maxHealth;
+        healthBar.SetMaxHealth(maxHealth);
+    }
+
+    public void TakeDamage(int damage)
+    {
+        currentHealth -= damage;
+        healthBar.SetHealth(currentHealth);
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
+    void Die()
+    {
+        Debug.Log("Player Died");
+        gameObject.SetActive(false);  // Disable the player object
+        // Add any additional game over handling here
+    }
+}
