@@ -1,22 +1,29 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class PlayerHealth : MonoBehaviour
 {
     public int maxHealth = 100;
     public int currentHealth;
-    public HealthBar healthBar;  // Reference to the HealthBar script
+    public Slider healthBarGreen;
+    public Slider healthBarRed;
 
     void Start()
     {
         currentHealth = maxHealth;
-        healthBar.SetMaxHealth(maxHealth);
+        // Initialize both health bars at the start
+        healthBarGreen.maxValue = maxHealth;
+        healthBarGreen.value = maxHealth;
+        healthBarRed.maxValue = maxHealth;
+        healthBarRed.value = maxHealth;
     }
 
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
-        healthBar.SetHealth(currentHealth);
+        currentHealth = Mathf.Max(currentHealth, 0);  // Prevent health from going below zero
+        UpdateHealthBar();
 
         if (currentHealth <= 0)
         {
@@ -24,10 +31,23 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
+    private void UpdateHealthBar()
+    {
+        healthBarGreen.value = currentHealth;
+        // Optionally, delay the red health bar's decrease to visually indicate damage taken
+        StartCoroutine(DelayedUpdateRedBar());
+    }
+
+    IEnumerator DelayedUpdateRedBar()
+    {
+        yield return new WaitForSeconds(0.5f);  // Delay for visual effect
+        healthBarRed.value = currentHealth;
+    }
+
     void Die()
     {
         Debug.Log("Player Died");
         gameObject.SetActive(false);  // Disable the player object
-        // Add any additional game over handling here
+        // Additional death handling could go here
     }
 }
