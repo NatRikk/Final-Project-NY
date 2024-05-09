@@ -1,13 +1,13 @@
 using UnityEngine;
 
-public class KeyPiece : MonoBehaviour
+public class KeyPickup : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
             KeyManager.instance.AddKey();
-            Destroy(gameObject); // This destroys the key piece when collected
+            Destroy(gameObject); // Destroy the key
         }
     }
 }
