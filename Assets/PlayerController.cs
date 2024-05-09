@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -26,25 +27,25 @@ public class PlayerController : MonoBehaviour
 
     public class PlayerHealth : MonoBehaviour
     {
-        public int maxHealth = 100;
-        public int currentHealth;
-        public HealthBar healthBar;  // Reference to the HealthBar script
+        public int health = 100;
 
-        void Start()
+        void Update()
         {
-            currentHealth = maxHealth;
-            healthBar.SetMaxHealth(maxHealth);
+            if (health <= 0)
+            {
+                Die();
+            }
+        }
+
+        void Die()
+        {
+            Debug.Log("Player Died - Restarting Game");
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
         public void TakeDamage(int damage)
         {
-            currentHealth -= damage;
-            healthBar.SetHealth(currentHealth);
-            if (currentHealth <= 0)
-            {
-                Debug.Log("Player Died");
-                // Add death handling logic here
-            }
+            health -= damage;
         }
     }
 }
